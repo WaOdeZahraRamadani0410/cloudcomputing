@@ -1,18 +1,22 @@
 services:
   app:
     build: .
-    container_name: atlasweather-app
-    restart: unless-stopped
-    env_file:
-      - .env
 
-  nginx:
-    image: nginx:alpine
-    container_name: atlasweather-nginx
+    container_name: atlasweather-app
+
     restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - app
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+    environment:
+      VIRTUAL_HOST: atlasweather.my.id,www.atlasweather.my.id
+      LETSENCRYPT_HOST: atlasweather.my.id,www.atlasweather.my.id
+      LETSENCRYPT_EMAIL: emailkamu@gmail.com
+
+    expose:
+      - "5000"
+
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    external: true
