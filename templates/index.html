@@ -1,0 +1,101 @@
+{% extends "base.html" %} {% block title %}Weather — Atlas{% endblock %} {%
+block content %}
+
+<section class="page-head">
+  <p class="eyebrow eyebrow-sky">Live Telemetry</p>
+  <h1>Cek cuaca kota mana pun</h1>
+  <p class="lead">
+    Masukkan nama kota untuk melihat suhu, kelembapan, dan kondisi angin saat
+    ini.
+  </p>
+</section>
+
+<div class="quota-row">
+  {% if quota %}
+  <div class="quota-bar">
+    <div class="quota-bar-fill" style="width: {{ quota.percent }}%"></div>
+  </div>
+  <p class="quota-text">
+    Sisa pencarian hari ini: <b>{{ quota.remaining }}/{{ quota.limit }}</b>
+  </p>
+  {% else %}
+  <p class="quota-text quota-pro">✨ Pencarian unlimited — plan Pro aktif</p>
+  {% endif %}
+</div>
+
+<form method="POST" class="search-form">
+  <input
+    type="text"
+    name="city"
+    placeholder="Masukkan kota, misalnya Jakarta"
+  />
+  <button type="submit" class="btn btn-sky">Cari</button>
+</form>
+
+{% if error %}
+<p class="error">⚠ {{ error }}</p>
+{% endif %} {% if data %}
+<div class="weather-card">
+  <div class="weather-card-head">
+    <h2>{{ data.city }}, {{ data.country }}</h2>
+    <span class="live-tag"><span class="live-dot"></span>Live</span>
+  </div>
+
+  <p class="weather-desc">🌤️ {{ data.desc }}</p>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">🌡️ Suhu</div>
+      <div class="stat-value">{{ data.temp }}°C</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">🤔 Terasa seperti</div>
+      <div class="stat-value">{{ data.feels }}°C</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">💧 Kelembapan</div>
+      <div class="stat-value">{{ data.humidity }}%</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">💨 Angin</div>
+      <div class="stat-value">{{ data.wind }} m/s</div>
+    </div>
+  </div>
+
+  {% if data.pressure %}
+  <div class="pro-detail">
+    <p class="eyebrow eyebrow-sky">Pro Insight</p>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">📈 Tekanan</div>
+        <div class="stat-value">{{ data.pressure }} hPa</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">👁️ Visibilitas</div>
+        <div class="stat-value">{{ data.visibility }} km</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">🌅 Matahari terbit</div>
+        <div class="stat-value">{{ data.sunrise }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">🌇 Matahari terbenam</div>
+        <div class="stat-value">{{ data.sunset }}</div>
+      </div>
+    </div>
+  </div>
+  {% elif plan == "free" %}
+  <div class="locked-teaser">
+    <span class="locked-icon">🔒</span>
+    <div>
+      <p class="locked-title">Detail lengkap khusus Pro</p>
+      <p class="locked-text">
+        Tekanan udara, visibilitas, dan jam matahari terbit/terbenam tersedia di
+        plan Pro.
+      </p>
+    </div>
+    <a href="/pricing" class="btn btn-sun btn-sm">Upgrade</a>
+  </div>
+  {% endif %}
+</div>
+{% endif %} {% endblock %}

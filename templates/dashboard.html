@@ -1,0 +1,99 @@
+{% extends "base.html" %} {% block title %}Dashboard — Atlas{% endblock %} {%
+block content %}
+
+<section class="page-head">
+  <p class="eyebrow eyebrow-sky">Akun Kamu</p>
+  <h1>Dashboard</h1>
+  <p class="lead">
+    Pantau status paket dan akses fitur Weather App di satu tempat.
+  </p>
+</section>
+
+<div class="plan-card">
+  <div class="plan-card-row">
+    <div>
+      <p class="stat-label">Plan Aktif</p>
+      <p class="plan-name">{{ plan }}</p>
+    </div>
+    <span
+      class="badge {% if plan == 'free' %}badge-free{% else %}badge-pro{% endif %}"
+      >{{ plan.upper() }}</span
+    >
+  </div>
+
+  {% if plan == "free" %}
+  <div class="banner banner-warning">
+    <span class="banner-icon">⚠</span>
+    <div class="banner-copy">
+      <p class="banner-title">Upgrade ke Pro untuk membuka fitur penuh</p>
+      <p class="banner-text">
+        Dapatkan unlimited request, riwayat cuaca, dan akses prioritas.
+      </p>
+    </div>
+    <a href="/pricing" class="btn btn-sun">Lihat Pricing</a>
+  </div>
+  {% else %}
+  <div class="banner banner-success">
+    <span class="banner-icon">🚀</span>
+    <div class="banner-copy">
+      <p class="banner-title">Kamu sudah Pro!</p>
+      <p class="banner-text">
+        Semua fitur aktif, termasuk unlimited request dan riwayat cuaca.
+      </p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<div class="dash-grid">
+  <div class="dash-card">
+    <p class="eyebrow eyebrow-sky">Kuota Pencarian</p>
+    {% if quota %}
+    <div class="quota-bar">
+      <div class="quota-bar-fill" style="width: {{ quota.percent }}%"></div>
+    </div>
+    <p class="quota-text">
+      Terpakai <b>{{ quota.used }}/{{ quota.limit }}</b> hari ini
+    </p>
+    <p class="dash-card-note">
+      Reset otomatis setiap hari. Upgrade ke Pro untuk pencarian unlimited.
+    </p>
+    {% else %}
+    <p class="quota-text quota-pro">✨ Unlimited — tidak ada batas harian</p>
+    {% endif %}
+  </div>
+
+  <div class="dash-card">
+    <p class="eyebrow eyebrow-sky">Riwayat Pencarian</p>
+    {% if plan == "pro" %} {% if history %}
+    <ul class="history-list">
+      {% for item in history %}
+      <li>
+        <div>
+          <p class="history-city">{{ item.city }}, {{ item.country }}</p>
+          <p class="history-time">{{ item.time }}</p>
+        </div>
+        <span class="history-temp">{{ item.temp }}°C</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="dash-card-note">
+      Belum ada pencarian. Coba cari cuaca kota favoritmu.
+    </p>
+    {% endif %} {% else %}
+    <div class="locked-teaser locked-teaser-stack">
+      <span class="locked-icon">🔒</span>
+      <div>
+        <p class="locked-title">Khusus Pro</p>
+        <p class="locked-text">
+          Simpan riwayat 5 pencarian terakhir secara otomatis.
+        </p>
+      </div>
+      <a href="/pricing" class="btn btn-sun btn-sm">Upgrade</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

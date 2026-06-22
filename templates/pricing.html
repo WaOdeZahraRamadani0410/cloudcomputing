@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block title %}Pricing — Atlas{% endblock %} {%
+block content %}
+
+<section class="page-head">
+  <p class="eyebrow eyebrow-sky">Pilih Paket</p>
+  <h1>Pricing Plan</h1>
+  <p class="lead">
+    Mulai gratis, upgrade kapan saja saat kebutuhan data cuaca kamu bertambah.
+  </p>
+</section>
+
+<div class="pricing">
+  <div class="plan-tile">
+    <div class="plan-tile-head">
+      <p class="eyebrow">Free</p>
+      <div class="price">
+        <span class="price-amount">Rp0</span
+        ><span class="price-period">/bulan</span>
+      </div>
+    </div>
+
+    <ul class="feature-list">
+      <li class="ok">Weather basic</li>
+      <li class="ok">{{ limit }} request/hari</li>
+      <li class="no">No history</li>
+    </ul>
+
+    {% if plan == "free" %}
+    <button type="button" class="btn btn-outline" disabled>Current Plan</button>
+    {% else %}
+    <a href="/upgrade/free" class="btn btn-outline">Downgrade</a>
+    {% endif %}
+  </div>
+
+  <div class="plan-tile plan-tile-pro">
+    <p class="plan-tag">Direkomendasikan</p>
+    <div class="plan-tile-head">
+      <p class="eyebrow eyebrow-sky">Pro</p>
+      <div class="price">
+        <span class="price-amount">Rp149rb</span
+        ><span class="price-period">/bulan</span>
+      </div>
+    </div>
+
+    <ul class="feature-list">
+      <li class="ok">Unlimited weather</li>
+      <li class="ok">History</li>
+      <li class="ok">Priority access</li>
+    </ul>
+
+    {% if plan == "pro" %}
+    <button type="button" class="btn btn-sky" disabled>Active Plan</button>
+    {% else %}
+    <a href="/upgrade/pro" class="btn btn-sky">Upgrade</a>
+    {% endif %}
+  </div>
+</div>
+
+<p class="account-status">Status akun: <b>{{ plan.upper() }}</b></p>
+
+{% endblock %}
